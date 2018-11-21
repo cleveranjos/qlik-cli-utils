@@ -2,6 +2,7 @@
 # Export all unpublished apps to a folder
 # a separate folder for each user
 #
+
 $folder = "c:\dump"
 
 Connect-Qlik ## check https://github.com/ahaydon/Qlik-Cli for details
