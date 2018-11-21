@@ -3,8 +3,10 @@
 # a folder for each stream
 # 
 
-$folder = "c:\dump"
+connect-qlik
 
-foreach ($file in Get-ChildItem -Filter *.qvf -Path $folder ) {
-    Import-QlikApp -file $file.FullName -name $_.Basename -upload | Publish-QlikApp -stream $file.Directory.BaseName
+$folder = "C:\Users\qlikservice\Documents\apps\ExportedApps"
+
+foreach ($file in Get-ChildItem -recurse -Filter *.qvf -Path $folder ) {
+    Import-QlikApp -file $file.FullName -name $file.Basename -upload | Publish-QlikApp -stream $file.Directory.BaseName
 }
