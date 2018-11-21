@@ -1,7 +1,8 @@
-$myserver = "qmi-qs-sn"
+#
+#  Re-imports apps exported by export-user-apps.ps1
+#
 $folder = "c:\dump"
-$domain = "QMI-QS-SN"
-Connect-Qlik $myserver
+Connect-Qlik 
 foreach ($qvf in gci -Recurse -Filter "*.qvf" -Path $folder ) {
     $app = $qvf.BaseName
     $user =  $qvf.Directory.Name
