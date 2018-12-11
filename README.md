@@ -1,2 +1,2 @@
 ## First Version
-A collection for automate tasks for your Qlik Sense box
+A collection of automation tasks for your Qlik Sense box
