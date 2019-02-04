@@ -13,3 +13,5 @@ foreach($qvf in Get-QlikApp -filter "Published eq true") {
     New-Item -ItemType Directory -Force -Path "$folder\$streamfolder"
     Export-QlikApp -id $qvf.id -filename "$($folder)\$($streamfolder)\$($qvf.name).qvf" #dumps the qvf
 }
+
+## End of file

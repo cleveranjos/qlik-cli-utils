@@ -13,3 +13,4 @@ foreach($qvf in get-qlikapp -filter "Published eq false" -full ) {
     Export-QlikApp -id $qvf.id -filename "$($folder)\$($user)\$($qvf.name).qvf" #dumps the qvf
 }
 
+## End of file
