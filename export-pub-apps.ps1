@@ -2,7 +2,10 @@
 # Dump published apps
 # a folder for each stream
 # 
+#
+
 $folder = "c:\dump"
+
 
 Connect-Qlik r ## check https://github.com/ahaydon/Qlik-Cli for details
 
