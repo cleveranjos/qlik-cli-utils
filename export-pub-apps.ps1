@@ -6,8 +6,7 @@
 
 $folder = "c:\dump"
 
-
-Connect-Qlik r ## check https://github.com/ahaydon/Qlik-Cli for details
+Connect-Qlik ## check https://github.com/ahaydon/Qlik-Cli for details
 
 foreach($qvf in Get-QlikApp -filter "Published eq true") {
     $streamfolder = $qvf.stream.name
