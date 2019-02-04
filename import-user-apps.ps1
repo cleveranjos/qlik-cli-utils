@@ -27,7 +27,7 @@ SOFTWARE.
 #
 $folder = "c:\dump"
 Connect-Qlik|Out-Null ## check https://github.com/ahaydon/Qlik-Cli for details
-foreach ($qvf in gci -Recurse -Filter "*.qvf" -Path $folder ) {
+foreach ($qvf in Get-ChildItem -Recurse -Filter "*.qvf" -Path $folder ) {
     $app = $qvf.BaseName
     $user =  $qvf.Directory.Name
     $app = Import-QlikApp -file $qvf.FullName -name "$app" -upload
