@@ -27,3 +27,4 @@ if (($value -gt 0) -and ($value -le $sessions.Count)) {
         Invoke-QlikDelete -path "$prefix/session/$($sessions.Item($value-1).SessionId)"
     }
 }
+
