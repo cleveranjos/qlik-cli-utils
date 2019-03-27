@@ -22,8 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 #>
+
 #
-# re-import e publisfapps
+# re-import and publish apps
 # a folder for each stream
 # 
 
@@ -34,7 +35,5 @@ $folder = "C:\Users\qlikservice\Documents\apps\ExportedApps"
 foreach ($file in Get-ChildItem -recurse -Filter *.qvf -Path $folder ) {
     Import-QlikApp -file $file.FullName -name $file.Basename -upload | Publish-QlikApp -stream $file.Directory.BaseName
 }
-
-
 
 ## End of file
