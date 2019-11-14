@@ -36,7 +36,7 @@ foreach ($file in Get-ChildItem -recurse -Filter *.qvf -Path $folder ) {
     if( -not  (Get-QlikStream -filter "name eq '$($file.Directory.BaseName)'") ) {
        New-QlikStream -name "$($file.Directory.BaseName)"
     }
-    Import-QlikApp -file $file.FullName -name $file.Basename -upload | Publish-QlikApp -stream $file.Directory.BaseName
+    Import-QlikApp -file "$($file.FullName)"  -name "$($file.Basename)"  -upload | Publish-QlikApp -stream "$($file.Directory.BaseName)"
 }
 
 ## End of file
