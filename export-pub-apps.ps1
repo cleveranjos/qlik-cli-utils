@@ -22,41 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 #>
-#
-# Dump published apps
-# a folder for each stream
-# ***
-# WARNING, all unpublished sheets will be published to be exported
-# ***
-# 
 
 $folder = "c:\dump"
 
 Connect-Qlik|Out-Null ## check https://github.com/ahaydon/Qlik-Cli for details
-
-foreach($qvf in Get-QlikApp -filter "Published eq true and stream.name eq 'Everyone'") {
-    $unpublishedSheets = Get-QlikObject -filter "app.id eq $($qvf.id) and published eq false and objectType eq 'sheet'"
-    foreach($s in $unpublishedSheets) { 
-        Publish-QlikObject -id $s.id
-        Update-QlikObject -Approved $true -id $s.id
+$streams = Get-QlikStream -full
+$streams | Export-Csv -Path $folder\streams.csv
+foreach($stream in $streams) {
+    $streamfolder = $stream.name
+    if (-not (Test-Path -LiteralPath "$folder\$streamfolder")) {
+        Write-Host "Creating $($streamfolder)"
+        New-Item -ItemType Directory -Force -Path "$folder\$streamfolder" | Out-Null 
     }
-
-    $unapprovedSheets = Get-QlikObject -filter "app.id eq $($qvf.id) and approved eq false and objectType eq 'sheet'"
-    foreach($s in $unapprovedSheets) { 
-        Update-QlikObject -Approved $true -id $s.id
-    }
-    $streamfolder = $qvf.stream.name
-    New-Item -ItemType Directory -Force -Path "$folder\$streamfolder"
-    Export-QlikApp -id $qvf.id -filename "$($folder)\$($streamfolder)\$($qvf.name).qvf" #dumps the qvf
-    foreach($s in $unapprovedSheets) { 
-        Update-QlikObject -Approved $false -id $s.id 
-    }
-    foreach($s in $unpublishedSheets) { 
-        Update-QlikObject -Approved $false -id $s.id 
-        Unpublish-QlikObject -id $s.id
-        
+    $streamfolder
+    foreach($qvf in Get-QlikApp -full -filter "Published eq true and stream.name eq '$($streamfolder)' ") {  
+        if (-not (Test-Path -LiteralPath "$folder\$streamfolder\$($qvf.name).qvf")) {
+            Write-Host "Exporting $($qvf.name) with $($qvf.fileSize) bytes"
+            Try {
+                Export-QlikApp -id $qvf.id -filename "$($folder)\$($streamfolder)\$($qvf.name).qvf" | Out-Null #dumps the qvf
+            } finally { 
+            
+            } 
+        } else {
+            Write-Host "Skipping $($folder)\$streamfolder\$($qvf.name).qvf"
+        } 
     }
 }
+
 
 
 ## End of file
