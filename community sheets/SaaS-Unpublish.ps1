@@ -21,26 +21,6 @@ SOFTWARE.
 # promoted sheets
 $list = "c:\temp\list.csv"
 
-#Connect-Qlik|Out-Null ## check https://github.com/ahaydon/Qlik-Cli for details
-Get-PfxCertificate C:\Users\cuv\QlikMachineImages\shared-content\certificates\sense\client.pfx | Connect-Qlik `
--ComputerName sense -UserName INTERNAL\sa_api `
--TrustAllCerts | Out-Null
-
-## logic to retrieve the sheets that should be promoted. Please adjust to your needs
-$filter=@"
-objectType eq 'sheet' 
- and published eq true 
- and approved eq false 
- and app.stream.name so 'Cloud'
-
-"@  # and app.name so 'tes'
-
-$sheets = Get-QlikObject -filter $filter.Replace([environment]::NewLine , ' ') -full
-# Clears the list file
-New-Item -Force $list 
-"appId,sheetId" | add-content -path $list
-foreach ($sheet in $sheets ) {
-    ## Adds to the list
-    "{0},{1}" -f $sheet.app.id,$sheet.id | add-content -path $list
-    Update-QlikObject -id $sheet.id -approved $true
+Import-Csv $list -Delimiter "," | ForEach-Object {
+    qlik app object unpublish $_.sheetId -a $_.appId 
 }
