@@ -22,5 +22,5 @@ SOFTWARE.
 $list = "c:\temp\list.csv"
 
 Import-Csv $list -Delimiter "," | ForEach-Object {
-    qlik app object unpublish $_.sheetId -a $_.appId 
+    qlik app object unpublish $_.engineObjectId -a $_.appId 
 }
