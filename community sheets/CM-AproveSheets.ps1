@@ -38,9 +38,9 @@ objectType eq 'sheet'
 $sheets = Get-QlikObject -filter $filter.Replace([environment]::NewLine , ' ') -full
 # Clears the list file
 New-Item -Force $list 
-"appId,sheetId" | add-content -path $list
+"appId,sheetId,engineObjectId" | add-content -path $list
 foreach ($sheet in $sheets ) {
     ## Adds to the list
-    "{0},{1}" -f $sheet.app.id,$sheet.id | add-content -path $list
+    "{0},{1},{2}" -f $sheet.app.id,$sheet.id,$sheet.engineObjectId | add-content -path $list
     Update-QlikObject -id $sheet.id -approved $true
 }
